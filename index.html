@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>FourierEpiKolam</title>
+<meta name="description" content="Generate a new kolam every time: dot-grid sikku kolams and floral kolams, drawn live by Fourier epicycles.">
+<meta name="theme-color" content="#2b0f0c">
+<meta property="og:title" content="FourierEpiKolam">
+<meta property="og:description" content="Math-generated kolam designs drawn by rotating Fourier circles.">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Marcellus&family=Hind+Madurai:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <h1>FourierEpiKolam</h1>
+    <p class="lede">A new kolam on every press, drawn by rotating Fourier circles.</p>
+  </header>
+
+  <div class="layout">
+    <section class="stage" aria-label="Kolam drawing">
+      <div class="stage-inner">
+        <div class="floor" id="floor"><canvas id="cv" role="img" aria-label="Kolam drawing"></canvas></div>
+        <div class="readout" id="readout"></div>
+        <p class="note" id="note"></p>
+      </div>
+    </section>
+
+    <aside class="rail" aria-label="Controls">
+      <button class="primary" id="newBtn" type="button">Draw a new kolam <kbd>N</kbd></button>
+
+      <div class="panel">
+        <div class="seg" role="group" aria-label="Kolam style">
+          <button type="button" data-mode="sikku" id="m-sikku">Dot grid</button>
+          <button type="button" data-mode="floral" id="m-floral">Floral</button>
+        </div>
+      </div>
+
+      <div class="panel" id="sikkuPanel">
+        <h2>Pulli grid <small id="dotCount"></small></h2>
+        <div class="shapes" id="shapes" role="group" aria-label="Grid shape"></div>
+        <div class="field">
+          <label class="lbl" for="sizeA"><span id="sizeALabel">Size</span><output id="sizeAOut"></output></label>
+          <input type="range" id="sizeA">
+        </div>
+        <div class="field" id="sizeBField" hidden>
+          <label class="lbl" for="sizeB"><span>Rows</span><output id="sizeBOut"></output></label>
+          <input type="range" id="sizeB" min="2" max="15">
+        </div>
+        <div class="chips" id="presets" aria-label="Common grids"></div>
+        <div class="two">
+          <div class="field">
+            <label class="lbl" for="sym"><span>Symmetry</span></label>
+            <select id="sym">
+              <option value="auto">Auto</option>
+              <option value="C4">4-fold turn</option>
+              <option value="D4">4-fold + mirrors</option>
+              <option value="D2">Two mirrors</option>
+              <option value="MV">One mirror</option>
+              <option value="NONE">None</option>
+            </select>
+          </div>
+          <div class="field">
+            <label class="lbl" for="weave"><span>Weave</span></label>
+            <select id="weave">
+              <option value="auto">Mixed</option>
+              <option value="open">Open</option>
+              <option value="dense">Dense net</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label class="lbl" for="loopStyle"><span>Outer loops</span></label>
+          <select id="loopStyle">
+            <option value="smooth">Smooth</option>
+            <option value="petal">Round petals</option>
+            <option value="drop">Pointed drops</option>
+          </select>
+        </div>
+        <label class="toggle"><input type="checkbox" id="single" checked><span>One unbroken line (sikku)<small>Off allows several lines and rings around single dots.</small></span></label>
+      </div>
+
+      <div class="panel" id="floralPanel" hidden>
+        <h2>Flowers</h2>
+        <div class="two">
+          <div class="field">
+            <label class="lbl" for="layout"><span>Layout</span></label>
+            <select id="layout">
+              <option value="auto">Surprise me</option>
+              <option value="mandala">Single mandala</option>
+              <option value="seven">Seven flowers</option>
+              <option value="garden">3×3 garden</option>
+              <option value="ring">Ring of flowers</option>
+            </select>
+          </div>
+          <div class="field">
+            <label class="lbl" for="flower"><span>Flower</span></label>
+            <select id="flower">
+              <option value="mixed">Mixed</option>
+              <option value="lotus">Lotus</option>
+              <option value="rose">Rose</option>
+              <option value="spiro">Spiral loops</option>
+              <option value="star">Star loops</option>
+              <option value="leaves">Leaf petals</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label class="lbl" for="petals"><span>Petals</span></label>
+          <select id="petals">
+            <option value="auto">Auto</option>
+            <option>4</option><option>5</option><option>6</option><option>7</option><option>8</option>
+            <option>9</option><option>10</option><option>11</option><option>12</option>
+          </select>
+        </div>
+        <label class="toggle"><input type="checkbox" id="lattice" checked><span>Fill gaps with pulli dots</span></label>
+      </div>
+
+      <div class="panel">
+        <h2>Look</h2>
+        <div class="field">
+          <span class="lbl"><span>Floor</span></span>
+          <div class="chips" id="floors" role="group" aria-label="Floor colour"></div>
+        </div>
+        <label class="toggle"><input type="checkbox" id="colorLines" checked><span>Colour each line or flower<small>Shows when there is more than one.</small></span></label>
+        <label class="toggle"><input type="checkbox" id="showDots" checked><span>Show pulli dots</span></label>
+      </div>
+
+      <div class="panel">
+        <h2>Fourier drawing</h2>
+        <div class="field">
+          <label class="lbl" for="terms"><span>Circles used</span><output id="termsOut"></output></label>
+          <input type="range" id="terms" min="0" max="9" step="1" value="9">
+        </div>
+        <div class="field">
+          <label class="lbl" for="speed"><span>Speed</span><output id="speedOut"></output></label>
+          <input type="range" id="speed" min="0" max="9" step="1" value="4">
+        </div>
+        <label class="toggle"><input type="checkbox" id="showCircles" checked><span>Show the rotating circles</span></label>
+        <label class="toggle"><input type="checkbox" id="together" checked><span>Draw all lines at the same time</span></label>
+        <div class="row">
+          <button class="ghost" type="button" id="replayBtn">Replay</button>
+          <button class="ghost" type="button" id="finishBtn">Show finished</button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>Save and share</h2>
+        <div class="seedrow">
+          <input type="text" id="seedInput" inputmode="numeric" aria-label="Design number">
+          <button class="ghost" type="button" id="loadBtn">Load</button>
+        </div>
+        <p class="hint">The design number with the same settings always redraws the same kolam.</p>
+        <div class="row">
+          <button class="ghost" type="button" id="pngBtn">Save PNG</button>
+          <button class="ghost" type="button" id="svgBtn">Save SVG</button>
+        </div>
+        <div class="row">
+          <button class="ghost" type="button" id="copyLinkBtn">Copy link</button>
+          <button class="ghost" type="button" id="fullBtn">Full screen <kbd>F</kbd></button>
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<script src="js/fourier.js"></script>
+<script src="js/sikku.js"></script>
+<script src="js/floral.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
