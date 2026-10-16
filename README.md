@@ -66,14 +66,6 @@ npx serve .
 python3 -m http.server 8000
 ```
 
-### Deploy free on Vercel
-
-1. Push this folder to a GitHub repository.
-2. In Vercel, choose **Add New → Project** and import the repository.
-3. Keep **Framework Preset: Other**, with no build command, and click **Deploy**.
-
-Or from a terminal: `npx vercel --prod`. GitHub Pages and Netlify work the same way.
-
 ## How the math works
 
 ### 1. One unbroken line from a tree
