@@ -1,6 +1,6 @@
 /*
  * FourierEpiKolam — curve maths: smoothing, arc-length resampling, FFT and
- * Fourier-series (epicycle) reconstruction. Idea after staghado/fourier-draw:
+ * Fourier-series (epicycle) reconstruction. The idea:
  * treat a closed curve as complex samples z_n, take the DFT, and redraw it as
  * a chain of rotating circles c_k · e^{2πi f_k t}, largest first.
  */
