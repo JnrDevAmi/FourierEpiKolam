@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-  <a href="#run-it-yourself">Run it yourself</a>
+  <a href="https://jnrdevami.github.io/FourierEpiKolam/"><strong>Try it live</strong></a>
   &nbsp;·&nbsp;
   <a href="#how-the-math-works">How the math works</a>
 </p>
@@ -56,15 +56,11 @@ scratch. Every one has a design number, so you can bring it back or share it.
 - Floors: red oxide, indigo, dark wood or slate.
 - Save as PNG (2400 px) or SVG, copy a link to the exact design, and go full screen (`F`).
 
-## Run it yourself
+## Try it live
 
-No install and no build step. Open `index.html`, or serve the folder:
+**[jnrdevami.github.io/FourierEpiKolam](https://jnrdevami.github.io/FourierEpiKolam/)** runs in your browser, with nothing to install.
 
-```bash
-npx serve .
-# or
-python3 -m http.server 8000
-```
+To use it offline, download this repository and double-click `index.html`.
 
 ## How the math works
 
