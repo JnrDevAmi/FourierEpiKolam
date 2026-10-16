@@ -8,11 +8,6 @@
   <a href="#how-the-math-works">How the math works</a>
 </p>
 
-<p align="center">
-  <img alt="Plain HTML, CSS and JavaScript" src="https://img.shields.io/badge/stack-HTML%20%C2%B7%20CSS%20%C2%B7%20JS-8a2e1e?style=flat-square">
-  <img alt="No build step" src="https://img.shields.io/badge/build-none-3d1712?style=flat-square">
-</p>
-
 ---
 
 ## Watch it draw
